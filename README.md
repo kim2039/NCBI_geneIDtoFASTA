@@ -24,7 +24,6 @@ All arguments are required and binaly (0 or 1). <br>
 <br>
 <br>
 JA<br>
-# NCBI_geneIDtoFASTA
 本ソフトウエアはNCBIのGeneIDを、mRNAおよびアミノ酸配列のFASTA形式へと変換するものである。<br>
 
 ## 必要なもの
