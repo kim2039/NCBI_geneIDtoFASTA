@@ -37,7 +37,7 @@ def main():
     parser.add_argument("--mrna", action="store_true", default=False, help="if you need mRNA seq")
     parser.add_argument("--protein", action="store_true", default=False, help="If you need protein seq")
     parser.add_argument("--cds", action="store_true", default=False, help="if you need CDS seq")
-    parser.add_argument("--splising", action="store_true", default=False, help="if you need all splicing variants")
+    parser.add_argument("--splicing", action="store_true", default=False, help="if you need all splicing variants")
 
     args = parser.parse_args()
 
