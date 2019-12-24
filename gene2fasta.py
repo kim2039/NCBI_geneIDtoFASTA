@@ -1,4 +1,4 @@
-/*
+"""
 The MIT License (MIT)
 
 Copyright (c) 2019 kim2039.
@@ -20,9 +20,9 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-*/
+"""
 
-
+import argparse
 import sys
 import numpy as np
 import pandas as pd
@@ -32,18 +32,21 @@ import datetime
 import os
 
 def main():
-    importfile = sys.argv[1] # tsvfile input
-    option_mRNA = int(sys.argv[2]) # if mRNA seq needed, 1
-    option_protein = int(sys.argv[3]) # if protein seq needed, 1
-    option_CDS = int(sys.argv[4]) # if CDS sequence you need, 1
-    option_splicing = int(sys.argv[5]) # if you need all splicing variants, 1
+    parser = argparse.ArgumentParser(description="Convert geneID(NCBI) to FASTA (mRNA, CDS, protein/amino acid sequences).")
+    parser.add_argument("importfile", type=str, help="TSV file input")
+    parser.add_argument("--mrna", action="store_true", default=False, help="if you need mRNA seq")
+    parser.add_argument("--protein", action="store_true", default=False, help="If you need protein seq")
+    parser.add_argument("--cds", action="store_true", default=False, help="if you need CDS seq")
+    parser.add_argument("--splising", action="store_true", default=False, help="if you need all splicing variants")
+
+    args = parser.parse_args()
 
     #set output file name
     now = datetime.datetime.now()
-    out_name = os.path.basename(importfile) + "_{0:%Y%m%d%H%M%S}".format(now)
+    out_name = os.path.basename(args.importfile) + "_{0:%Y%m%d%H%M%S}".format(now)
     
     # open tsv file and extract
-    indf = pd.read_csv(importfile, sep="\t")
+    indf = pd.read_csv(args.importfile, sep="\t")
     geneid = indf["GeneID"].values.tolist()
     print("Gene IDs are : " + str(geneid))
     print("input file number is : " + str(len(geneid)))
@@ -53,24 +56,20 @@ def main():
         try:
             gene_table = requests.get("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=gene&id={}&rettype=gene_table&retmode=text".format(i))
             # get fasta format sequences as list
-            lmRNA, lprotein = dumpingGENETABLE(gene_table.text, option_mRNA, option_protein, option_CDS, option_splicing)
+            lmRNA, lprotein = dumpingGENETABLE(gene_table.text, args.mrna, args.protein, args.cds, args.splicing)
 
             # writing the sequences    
             wmRNA = "\n".join(lmRNA)
             wprotein = "\n".join(lprotein)
-            if option_mRNA == 1:
+            if args.mrna:
                 with open(out_name + "_mRNA.fasta", mode="a") as f:
                     f.write(wmRNA)
-            if option_protein == 1:
+            if args.protein:
                 with open(out_name + "_protein.fasta", mode="a") as f:
                     f.write(wprotein)
 
         except requests.exceptions.RequestException as err:
             print(err)    
-        
-
-
-
 
 
 def dumpingGENETABLE(gene_table, mRNA_flag, protein_flag, CDS_flag, splicing_flag):
@@ -88,17 +87,17 @@ def dumpingGENETABLE(gene_table, mRNA_flag, protein_flag, CDS_flag, splicing_fla
     print(mRNA_list)
 
     # only 1 seq extraction if "splicing flag" = 0
-    if splicing_flag == 0:
+    if not splicing_flag:
         del mRNA_list[1:]
 
     mRNA_fasta = []
-    if mRNA_flag == 1:
+    if mRNA_flag:
         # get nucleotide fasta sequence from NCBI database
         for i in range(len(mRNA_list)):
             try:    
-                if CDS_flag == 0: # get all sequence
+                if not CDS_flag: # get all sequence
                     tmp_fasta = requests.get("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id={}&rettype=fasta&retmode=text".format(mRNA_list[i]))
-                elif CDS_flag == 1: # get only CDS sequence
+                else: # get only CDS sequence
                     tmp_fasta = requests.get("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id={}&rettype=fasta_cds_na&retmode=text".format(mRNA_list[i]))
                 #print(tmp_fasta.text)
                 mRNA_fasta.append(tmp_fasta.text)
@@ -110,7 +109,7 @@ def dumpingGENETABLE(gene_table, mRNA_flag, protein_flag, CDS_flag, splicing_fla
         MmRNA_fasta = []
 
     protein_fasta = []
-    if protein_flag == 1:
+    if protein_flag:
         # get protein fasta sequence
         for i in range(len(mRNA_list)):
             try:
