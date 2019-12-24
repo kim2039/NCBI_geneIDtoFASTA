@@ -21,8 +21,11 @@ All arguments are required and binaly (0 or 1). <br>
 - [protein] if this argument is 1, output protein (amino acid) sequences.
 - [CDS] if this argument is 1, output mRNA only CDS.
 - [splicing] if this argument is 1, output all splicing variants.
+## License
+MIT
 <br>
 <br>
+
 JA<br>
 本ソフトウエアはNCBIのGeneIDを、mRNAおよびアミノ酸配列のFASTA形式へと変換するものである。<br>
 
