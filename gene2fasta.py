@@ -61,10 +61,10 @@ def main():
             # writing the sequences    
             wmRNA = "\n".join(lmRNA)
             wprotein = "\n".join(lprotein)
-            if option_mRNA == 1:
+            if args.mrna:
                 with open(out_name + "_mRNA.fasta", mode="a") as f:
                     f.write(wmRNA)
-            if option_protein == 1:
+            if args.protein:
                 with open(out_name + "_protein.fasta", mode="a") as f:
                     f.write(wprotein)
 
@@ -87,7 +87,7 @@ def dumpingGENETABLE(gene_table, mRNA_flag, protein_flag, CDS_flag, splicing_fla
     print(mRNA_list)
 
     # only 1 seq extraction if "splicing flag" = 0
-    if splicing_flag:
+    if not splicing_flag:
         del mRNA_list[1:]
 
     mRNA_fasta = []
@@ -95,7 +95,7 @@ def dumpingGENETABLE(gene_table, mRNA_flag, protein_flag, CDS_flag, splicing_fla
         # get nucleotide fasta sequence from NCBI database
         for i in range(len(mRNA_list)):
             try:    
-                if CDS_flag: # get all sequence
+                if not CDS_flag: # get all sequence
                     tmp_fasta = requests.get("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id={}&rettype=fasta&retmode=text".format(mRNA_list[i]))
                 else: # get only CDS sequence
                     tmp_fasta = requests.get("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id={}&rettype=fasta_cds_na&retmode=text".format(mRNA_list[i]))
