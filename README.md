@@ -12,15 +12,24 @@ This software converts geneID (NCBI)  to FASTA (mRNA, CDS, protein/amino acid se
 This program fit to NCBI gene tabular results.<br>
 You must prepare tsv file including "GeneID" column (need "GeneID" field, too).<br>
 
-### Usage
+### Usage 
 ~~~
-$ python gene2fasta.py [inputfile] [mRNA] [protein] [CDS] [splicing]
+$ python gene2fasta.py -h
+usage: gene2fasta.py [-h] [--mrna] [--protein] [--cds] [--splising] importfile
+
+Convert geneID(NCBI) to FASTA (mRNA, CDS, protein/amino acid sequences).
+
+positional arguments:
+  importfile  TSV file input
+
+optional arguments:
+  -h, --help  show this help message and exit
+  --mrna      if you need mRNA seq
+  --protein   If you need protein seq
+  --cds       if you need CDS seq
+  --splising  if you need all splicing variants
 ~~~
-All arguments are required and binaly (0 or 1). <br>
-- [mRNA] if this argument is 1, output mRNA full length sequences.
-- [protein] if this argument is 1, output protein (amino acid) sequences.
-- [CDS] if this argument is 1, output mRNA only CDS.
-- [splicing] if this argument is 1, output all splicing variants.
+
 ## License
 MIT
 <br>
@@ -41,12 +50,21 @@ JA<br>
 
 ### 使用法
 ~~~
-$ python gene2fasta.py [inputfile] [mRNA] [protein] [CDS] [splicing]
-~~~
-すべての引数が必要であり、また0か1のみの入力を受け付ける。 <br>
-- [mRNA] もし1なら, mRNAを出力し、かつそのmRNAは全長を含む.
-- [protein] もし1なら, アミノ酸配列を出力する.
-- [CDS] もし1なら, mRNAを出力し、かつその配列はCDSのみである.
-- [splicing] もし1なら, すべてのスプライシングバリアントを出力する.
+$ python gene2fasta.py -h
+usage: gene2fasta.py [-h] [--mrna] [--protein] [--cds] [--splising] importfile
 
-本ソフトウエアにより生ずる一切の損害に対して一切の責任を負いかねます。
+Convert geneID(NCBI) to FASTA (mRNA, CDS, protein/amino acid sequences).
+
+positional arguments:
+  importfile  TSV file input
+
+optional arguments:
+  -h, --help  show this help message and exit
+  --mrna      if you need mRNA seq
+  --protein   If you need protein seq
+  --cds       if you need CDS seq
+  --splising  if you need all splicing variants
+~~~
+
+## ライセンス
+MIT
