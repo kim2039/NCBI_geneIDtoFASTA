@@ -33,10 +33,12 @@ def main():
             # writing the sequences    
             wmRNA = "\n".join(lmRNA)
             wprotein = "\n".join(lprotein)
-            with open(out_name + "_mRNA.fasta", mode="a") as f:
-                f.write(wmRNA)
-            with open(out_name + "_protein.fasta", mode="a") as f:
-                f.write(wprotein)
+            if option_mRNA == 1:
+                with open(out_name + "_mRNA.fasta", mode="a") as f:
+                    f.write(wmRNA)
+            if option_protein == 1:
+                with open(out_name + "_protein.fasta", mode="a") as f:
+                    f.write(wprotein)
 
         except requests.exceptions.RequestException as err:
             print(err)    
@@ -63,10 +65,10 @@ def dumpingGENETABLE(gene_table, mRNA_flag, protein_flag, CDS_flag, splicing_fla
     # only 1 seq extraction if "splicing flag" = 0
     if splicing_flag == 0:
         del mRNA_list[1:]
-    
+
+    mRNA_fasta = []
     if mRNA_flag == 1:
         # get nucleotide fasta sequence from NCBI database
-        mRNA_fasta = []
         for i in range(len(mRNA_list)):
             try:    
                 if CDS_flag == 0: # get all sequence
@@ -79,10 +81,12 @@ def dumpingGENETABLE(gene_table, mRNA_flag, protein_flag, CDS_flag, splicing_fla
                 print(err)
 
         MmRNA_fasta = fastamodify(mRNA_fasta, fasta_header, mRNA_list)
+    else:
+        MmRNA_fasta = []
 
+    protein_fasta = []
     if protein_flag == 1:
         # get protein fasta sequence
-        protein_fasta = []
         for i in range(len(mRNA_list)):
             try:
                 tmp_fasta = requests.get("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id={}&rettype=fasta_cds_aa&retmode=text".format(mRNA_list[i]))
@@ -91,6 +95,9 @@ def dumpingGENETABLE(gene_table, mRNA_flag, protein_flag, CDS_flag, splicing_fla
                 print(err)
         
         Mprotein_fasta = fastamodify(protein_fasta, fasta_header, mRNA_list)
+    else:
+        Mprotein_fasta = []
+
     return (MmRNA_fasta, Mprotein_fasta)
 
     
