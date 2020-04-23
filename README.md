@@ -15,7 +15,7 @@ You must prepare tsv file including "GeneID" column (need "GeneID" field, too).<
 ### Usage 
 ~~~
 $ python gene2fasta.py -h
-usage: gene2fasta.py [-h] [--mrna] [--protein] [--cds] [--splising] importfile
+usage: gene2fasta.py [-h] [--mrna] [--protein] [--cds] [--splicing] importfile
 
 Convert geneID(NCBI) to FASTA (mRNA, CDS, protein/amino acid sequences).
 
@@ -27,7 +27,7 @@ optional arguments:
   --mrna      if you need mRNA seq
   --protein   If you need protein seq
   --cds       if you need CDS seq
-  --splising  if you need all splicing variants
+  --splicing  if you need all splicing variants
 ~~~
 
 ## License
@@ -51,7 +51,7 @@ JA<br>
 ### 使用法
 ~~~
 $ python gene2fasta.py -h
-usage: gene2fasta.py [-h] [--mrna] [--protein] [--cds] [--splising] importfile
+usage: gene2fasta.py [-h] [--mrna] [--protein] [--cds] [--splicing] importfile
 
 Convert geneID(NCBI) to FASTA (mRNA, CDS, protein/amino acid sequences).
 
@@ -63,7 +63,7 @@ optional arguments:
   --mrna      if you need mRNA seq
   --protein   If you need protein seq
   --cds       if you need CDS seq
-  --splising  if you need all splicing variants
+  --splicing  if you need all splicing variants
 ~~~
 
 ## ライセンス
