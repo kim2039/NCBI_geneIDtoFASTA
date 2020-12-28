@@ -30,6 +30,9 @@ optional arguments:
   --splicing  if you need all splicing variants
 ~~~
 
+### NOTE
+"--cds" option needs to use with "---mrna" option.
+
 ## License
 MIT
 <br>
@@ -65,6 +68,8 @@ optional arguments:
   --cds       if you need CDS seq
   --splicing  if you need all splicing variants
 ~~~
+### 注意
+"--cds" オプションは "---mrna" オプションと共に使う必要がある。
 
 ## ライセンス
 MIT
